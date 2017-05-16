@@ -1,7 +1,8 @@
 import os
+import re
 import logging
 from uuid import uuid4
-from string import maketrans
+from collections import OrderedDict
 
 from telegram import InlineQueryResultArticle, InputTextMessageContent
 from telegram.ext import Updater, InlineQueryHandler, CommandHandler
@@ -12,13 +13,23 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-intab = "aiotcpq"
-outtab = "eeedgbg"
-trantab = maketrans(intab, outtab)
+translation_table = [
+    ('c(a|i|o)', 'ghe'),
+    ('a|i|o', 'e'),
+    ('t', 'd'),
+    ('c', 'g'),
+    ('p', 'b'),
+    ('q', 'g')
+]
+
+ordered_translation_table = OrderedDict(translation_table)
 
 
 def genverde(text):
-    return "hehehe " + text.encode('utf-8').lower().translate(trantab) + " hehehe"
+    res = text
+    for key, value in ordered_translation_table.items():
+        res = re.sub(key, value, res)
+    return "hehehe " + res + " hehehe"
 
 
 def inline_genverde(bot, update):

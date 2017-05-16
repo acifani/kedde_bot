@@ -18,7 +18,7 @@ trantab = maketrans(intab, outtab)
 
 
 def genverde(text):
-    return "hehehe " + text.encode('utf-8').translate(trantab) + " hehehe"
+    return "hehehe " + text.encode('utf-8').lower().translate(trantab) + " hehehe"
 
 
 def inline_genverde(bot, update):
@@ -27,10 +27,19 @@ def inline_genverde(bot, update):
 
     results.append(InlineQueryResultArticle(
         id=uuid4(),
-        title="Genverde en keddese",
+        title="Genverde",
+        description="Genverde el desde en keddese",
         input_message_content=InputTextMessageContent(genverde(query))))
 
     update.inline_query.answer(results)
+
+
+def message_genverde(bot, update, args):
+    if len(args) <= 0:
+        update.message.reply_text("hehehe deve sgrevere guelgese hehehe")
+    else:
+        query = ' '.join(args)
+        update.message.reply_text(genverde(query))
 
 
 def start(bot, update):
@@ -47,6 +56,7 @@ def main():
     dp = updater.dispatcher
 
     dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CommandHandler("kit", message_genverde, pass_args=True))
     dp.add_handler(InlineQueryHandler(inline_genverde))
     dp.add_error_handler(error)
 

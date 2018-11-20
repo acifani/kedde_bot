@@ -24,12 +24,14 @@ translation_table = [
 
 ordered_translation_table = OrderedDict(translation_table)
 
+def he_factory(n):
+    return "he"*n
 
 def genverde(text):
     res = text
     for key, value in ordered_translation_table.items():
         res = re.sub(key, value, res)
-    return "hehehe " + res + " hehehe"
+    return he_factory(3) + res + he_factory(3)
 
 
 def inline_genverde(bot, update):
@@ -54,7 +56,7 @@ def message_genverde(bot, update, args):
 
 
 def start(bot, update):
-    update.message.reply_text('Hehehe')
+    update.message.reply_text(he_factory(3))
 
 
 def error(bot, update, error):
